@@ -1,0 +1,82 @@
+class_name Records
+extends RefCounted
+## Persistent play records in user://records.json (matches, wins, best combo, per-fighter W/L, arcade clears).
+## Written by FightScreen at the end of every match; read by the Extras screen.
+
+const PATH := "user://records.json"
+
+## Scripted runs (a step file's --script= after --, or a SceneTree test's --script) never write the player's real file.
+## A test that needs to write points `path` at a scratch file.
+static var path := PATH
+
+static func _writes() -> bool:
+	return path != PATH or not Session.scripted()
+
+static func load_all() -> Dictionary:
+	var base := {"matches": 0, "human_wins": 0, "best_combo": 0, "total_damage": 0.0, "arcade_clears": 0, "per_fighter": {}, "by_mode": {}}
+	if not FileAccess.file_exists(path):
+		return base
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		return base
+	var data = JSON.parse_string(f.get_as_text())
+	f = null
+	if typeof(data) != TYPE_DICTIONARY:
+		if _writes():
+			DirAccess.copy_absolute(path, path + ".bad")
+		return base
+	for k in base:
+		var v = data.get(k)
+		if not (v is Dictionary if base[k] is Dictionary else (v is float or v is int)):
+			data[k] = base[k]
+	for key in data["per_fighter"].keys():
+		var row = data["per_fighter"][key]
+		if not row is Dictionary:
+			data["per_fighter"].erase(key)
+			continue
+		for w in ["wins", "losses"]:
+			if not (row.get(w) is float or row.get(w) is int):
+				row[w] = 0
+	return data
+
+## Writes a .tmp file and renames it over the real one, so a crash mid-write cannot leave an empty records file.
+static func save_all(d: Dictionary) -> void:
+	if not _writes():
+		return
+	var tmp := path + ".tmp"
+	var f := FileAccess.open(tmp, FileAccess.WRITE)
+	if f == null:
+		push_warning("records not saved to %s: %s" % [tmp, error_string(FileAccess.get_open_error())])
+		return
+	var stored := f.store_string(JSON.stringify(d))
+	f = null
+	if not stored:
+		push_warning("records not saved: could not write " + tmp)
+		return
+	var err := DirAccess.rename_absolute(tmp, path)
+	if err != OK:
+		push_warning("records not saved to %s: %s" % [path, error_string(err)])
+
+## Record one finished match. winner_id / loser_id are roster ids; human_won = a human beat the CPU
+## (or in versus2p always true); stats = {combo, damage}.
+static func add_match(mode: String, winner_id: int, loser_id: int, human_won: bool, stats: Dictionary) -> void:
+	var d := load_all()
+	d["matches"] = int(d["matches"]) + 1
+	if human_won:
+		d["human_wins"] = int(d["human_wins"]) + 1
+	d["best_combo"] = maxi(int(d["best_combo"]), int(stats.get("combo", 0)))
+	d["total_damage"] = float(d["total_damage"]) + float(stats.get("damage", 0.0))
+	var pf: Dictionary = d["per_fighter"]
+	for pair in [[winner_id, "wins"], [loser_id, "losses"]]:
+		var key := str(pair[0])
+		var row: Dictionary = pf.get(key, {"wins": 0, "losses": 0})
+		row[pair[1]] = int(row[pair[1]]) + 1
+		pf[key] = row
+	var bm: Dictionary = d["by_mode"]
+	bm[mode] = int(bm.get(mode, 0)) + 1
+	save_all(d)
+
+static func add_arcade_clear() -> void:
+	var d := load_all()
+	d["arcade_clears"] = int(d["arcade_clears"]) + 1
+	save_all(d)
