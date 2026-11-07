@@ -250,7 +250,7 @@ func _result(c: CanvasItem, age: float) -> void:
 	var wc := Vector2(CX, yc + (30.0 if lost else 10.0))
 	c.draw_texture_rect(t, _fit(t, wc, 160.0 if lost else 190.0, s), false, Color(1, 1, 1, a))
 	if not lost:     # the ribbon names the winner, so a loss shows LOSE alone
-		var nm := text.substr(0, maxi(text.length() - 5, 0))
+		var nm := Loc.t(text.substr(0, maxi(text.length() - 5, 0)))
 		var font := UI.font_ui(700)
 		var size := 46
 		while size > 24 and font.get_string_size(nm, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > 560.0:

@@ -96,7 +96,7 @@ func _draw() -> void:
 	var world: Node = hud.world
 	var dm := str(world.get("dummy_mode") if world.get("dummy_mode") != null else "stand")
 	var rail = hud.get("_top")     # the ribbon rides in with the top rail
-	Menu.ribbon(self, Rect2(640.0 - 78.0, 90.0 + (rail.position.y if rail != null else 0.0), 156.0, 22.0), "DUMMY " + dm.to_upper())
+	Menu.ribbon(self, Rect2(640.0 - 78.0, 90.0 + (rail.position.y if rail != null else 0.0), 156.0, 22.0), Loc.t("DUMMY ") + dm.to_upper())
 	_draw_history(world)
 	_draw_combo(hud._time)
 	var a := tip_alpha()

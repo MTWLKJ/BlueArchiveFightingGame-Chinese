@@ -1,0 +1,36 @@
+Noto Sans SC — 中文字体授权信息 / Chinese font licensing
+=========================================================
+
+本汉化新增的字体文件（本目录下的 NotoSansSC-*.ttf）：
+
+    NotoSansSC-Regular.ttf      (字重 400)
+    NotoSansSC-Medium.ttf       (字重 500)
+    NotoSansSC-SemiBold.ttf     (字重 600)
+    NotoSansSC-Bold.ttf         (字重 700)
+    NotoSansSC-ExtraBold.ttf    (字重 800)
+    NotoSansSC-Black.ttf        (字重 900)
+
+字体名称：Noto Sans SC（思源黑体的 Google 发行版）
+版权：Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
+      思源黑体 / Source Han Sans 由 Adobe 与 Google 联合开发；Noto Sans SC 为其 Google 发行名。
+授权协议：SIL Open Font License, Version 1.1 (OFL-1.1)
+协议全文：https://scripts.sil.org/OFL
+          项目内也保存了一份：assets/fonts/OFL-NotoSans.txt（原项目自带，覆盖 Noto 系列）
+
+OFL-1.1 允许：
+  * 自由使用、复制、合并、修改、再分发（包括随游戏一起分发、商用）。
+  * 嵌入到应用程序中随程序分发。
+
+OFL-1.1 要求：
+  * 不得单独出售字体文件本身。
+  * 修改后的字体若再分发，不得使用保留字体名（Reserved Font Name）。
+  * 分发时必须附带本授权声明与版权声明（本文件即为此用途）。
+
+本项目对字体文件未做任何修改（未重命名字体、未改动字形），仅按原样随游戏分发。
+
+原始下载来源（Google Fonts 分发）：
+  https://fonts.google.com/noto/specimen/Noto+Sans+SC
+  https://github.com/notofonts/noto-cjk
+
+备注：本项目原有字体（Barlow Condensed、Chakra Petch、Orbitron、Noto Sans）的授权说明
+见 assets/fonts/OFL-*.txt，未做改动。

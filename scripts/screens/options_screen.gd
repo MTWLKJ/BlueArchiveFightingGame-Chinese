@@ -14,7 +14,7 @@ const Painter := preload("res://scripts/ui/painter.gd")
 const ICONS := "res://assets/ba/ui/"
 const STEP := 0.05
 const CELLS := 20                   # 1 / STEP
-const IDS := ["bgm", "sfx", "flashes", "glyphs", "controls"]
+const IDS := ["bgm", "sfx", "flashes", "glyphs", "language", "controls"]
 const POP_W := 640.0
 const CONTROLS_W := 860.0
 const HEADER_H := 58.0
@@ -138,7 +138,7 @@ func _cell_y(i: int) -> float:
 
 func cap_rect(i: int) -> Rect2:
 	var r := row_rect(i)
-	var w := CAP_W_GLYPHS if IDS[i] == "glyphs" else CAP_W
+	var w := CAP_W_GLYPHS if IDS[i] in ["glyphs", "language"] else CAP_W
 	return Rect2(r.end.x - w - 10.0, r.position.y + (r.size.y - CAP_H) * 0.5, w, CAP_H)
 
 func close_rect() -> Rect2:
@@ -208,13 +208,19 @@ func _draw_toggle(c: Control, i: int, r: Rect2) -> void:
 			title = "Glyphs"
 			note = "Button pictures for your gamepad"
 			word = GLYPH_NAMES[Game.session.glyphs]
+		"language":
+			title = "Language"
+			note = "Simplified Chinese or English"
+			word = Loc.label_of(Game.session.language)
 	Menu.label(c, title, Vector2(r.position.x + 14.0, r.position.y + 31.0), 22, BaTokens.LABEL_INK)
 	Menu.label(c, note, Vector2(r.position.x + 14.0, r.position.y + 54.0), 14, BaTokens.alpha(BaTokens.INK, 0.8), Color(0, 0, 0, 0), 0, 0, 600)
 	if id == "glyphs":
 		var fam := ControllerGlyphs.family(0)
 		var x := cap.position.x - 14.0 - (PREVIEW_H + 4.0) * 4.0
 		for act in ["confirm", "back", "aux", "aux2"]:
-			c.draw_texture_rect(ControllerGlyphs.texture(fam, act), Rect2(x, cap.get_center().y - PREVIEW_H * 0.5, PREVIEW_H, PREVIEW_H), false, BaTokens.INK)
+			var g := ControllerGlyphs.texture(fam, act)
+			if g != null:
+				c.draw_texture_rect(g, Rect2(x, cap.get_center().y - PREVIEW_H * 0.5, PREVIEW_H, PREVIEW_H), false, BaTokens.INK)
 			x += PREVIEW_H + 4.0
 	Menu.nine(c, "Combat__Common_Btn_BG", cap, Menu.K, _on_tint() if on else BaTokens.GREY_OFF, BaTokens.SHEAR)
 	var size := Menu.fit(word, 16, cap.size.x - 20.0, 11, 800)
@@ -332,6 +338,8 @@ func _adjust(dir: int) -> void:
 			_set_flashes(dir > 0)
 		"glyphs":
 			_step_glyphs(dir)
+		"language":
+			_step_language(dir)
 
 func _activate(i: int) -> void:
 	match IDS[i]:
@@ -339,6 +347,8 @@ func _activate(i: int) -> void:
 			_set_flashes(not Game.session.reduce_flashes)
 		"glyphs":
 			_step_glyphs(1)
+		"language":
+			_step_language(1)
 		"controls":
 			Sfx.play("confirm")
 			_set_page("controls")
@@ -361,6 +371,15 @@ func _set_flashes(on: bool) -> void:
 func _step_glyphs(dir: int) -> void:
 	var n := ControllerGlyphs.OVERRIDES.size()
 	Game.session.glyphs = ControllerGlyphs.OVERRIDES[posmod(ControllerGlyphs.OVERRIDES.find(Game.session.glyphs) + dir, n)]
+	Sfx.play("tick")
+
+## Language row: steps through Loc.LANGS and applies it at once, so the row's own label is redrawn in the new language.
+func _step_language(dir: int) -> void:
+	var codes := Loc.codes()
+	var i := posmod(codes.find(Game.session.language) + dir, codes.size())
+	Game.session.language = String(codes[i])
+	Game.session.save_settings()
+	Loc.set_lang(Game.session.language)
 	Sfx.play("tick")
 
 func _set_value(id: String, v: float) -> void:

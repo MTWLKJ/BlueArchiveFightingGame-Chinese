@@ -209,9 +209,9 @@ func _side_tag(i: int) -> String:
 
 func _draw_block(c: Control, i: int) -> void:
 	var f: Dictionary = Game.by_id[_ids[i]]
-	var school := String(f.get("schoolName", "")).to_upper()
+	var school := Loc.t(String(f.get("schoolName", ""))).to_upper()
 	var crest := CrestIcon.get_icon(String(f.get("school", "")))
-	var nm := Fighters.display_name(f).to_upper()
+	var nm := Loc.t(Fighters.display_name(f)).to_upper()
 	var b := VsLayout.block(i, school, nm, CrestIcon.fit(String(f.get("school", ""))))
 	var right := i == 1
 	BaArt.nine(c, "Common__Common_Bg_Raius10px", b["bar"], BaTokens.side(i + 1), BaTokens.SHEAR)

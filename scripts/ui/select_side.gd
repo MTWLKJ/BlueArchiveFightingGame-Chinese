@@ -144,7 +144,8 @@ func clear_random() -> void:
 	_ink_to = 0.0
 
 func _set_block(school: String, school_key: String, nm: String, values: Array) -> void:
-	_school = school
+	_school = Loc.t(school)
+	nm = Loc.t(nm)
 	_crest = CrestIcon.get_icon(school_key) if school_key != "" else null
 	_crest_size = CrestIcon.fit(school_key) if school_key != "" else Vector2.ZERO
 	_name.text = nm

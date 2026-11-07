@@ -15,5 +15,7 @@ tmp/*
 !tmp/.gdignore
 __pycache__/
 *.pyc
-docs/
 .claude/
+
+# 本汉化版：docs/ 与 screenshots/ 是要发布的文档/截图目录，故不再忽略 docs/
+# （上游曾把 docs/ 列为本地草稿目录）

@@ -95,7 +95,7 @@ func items() -> Array:
 # construction
 func _build() -> void:
 	for i in 2:
-		var tb := GalleryKit.Tab.new().setup(SUB_SIZE, ["Fighters  %d" % Game.fighters.size(), "Specials  %d" % Game.specials.size()][i], 15)
+		var tb := GalleryKit.Tab.new().setup(SUB_SIZE, "%s  %d" % [Loc.t("Fighters" if i == 0 else "Specials"), Game.fighters.size() if i == 0 else Game.specials.size()], 15)
 		tb.position = Vector2(14.0 + float(i) * (SUB_SIZE.x + 12.0), SUB_Y)
 		tb.gui_input.connect(_on_toggle_input.bind(i))
 		add_child(tb)
@@ -337,9 +337,9 @@ static func move_rows(s: Dictionary) -> Array:
 		var shots: int = dm[1]
 		var desc: String = d[2]
 		if d[0] == "skill":
-			desc = String(SKILL_NAMES.get(s["weapon"], "Skill")) + " · %d shot%s" % [shots, "" if shots == 1 else "s"]
+			desc = "%s · %d%s" % [Loc.t(String(SKILL_NAMES.get(s["weapon"], "Skill"))), shots, Loc.t(" shot" if shots == 1 else " shots")]
 		elif d[0] == "ex":
-			desc = "EX Skill · %d shot%s" % [shots, "" if shots == 1 else "s"]
+			desc = "%s · %d%s" % [Loc.t("EX Skill"), shots, Loc.t(" shot" if shots == 1 else " shots")]
 		out.append([String(d[1]), desc, ("%d" % per) if shots <= 1 else ("%d×%d" % [per, shots]),
 				int(m.get("startup", 0)), int(m.get("active", 0)), int(m.get("recovery", 0)), String(d[0])])
 	return out

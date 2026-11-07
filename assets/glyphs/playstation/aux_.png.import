@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du3hf6apquteb"
-path="res://.godot/imported/aux.png-5d007acb74628e6830a59c80b843359b.ctex"
+uid="uid://xepam4ukbqsw"
+path="res://.godot/imported/aux_.png-ca12296c1de30ca32a2f5f1f9ae39267.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/glyphs/xbox/aux.png"
-dest_files=["res://.godot/imported/aux.png-5d007acb74628e6830a59c80b843359b.ctex"]
+source_file="res://assets/glyphs/playstation/aux_.png"
+dest_files=["res://.godot/imported/aux_.png-ca12296c1de30ca32a2f5f1f9ae39267.ctex"]
 
 [params]
 

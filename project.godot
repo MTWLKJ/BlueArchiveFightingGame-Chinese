@@ -22,6 +22,7 @@ boot_splash/show_image=false
 [autoload]
 
 Game="*res://scripts/core/game.gd"
+Loc="*res://scripts/core/loc.gd"
 Controls="*res://scripts/core/controls.gd"
 Sfx="*res://scripts/core/sfx.gd"
 Bgm="*res://scripts/core/bgm.gd"

@@ -14,8 +14,49 @@ const BARLOW_SB := "res://assets/fonts/BarlowCondensed-SemiBold.ttf"
 const CHAKRA_BI := "res://assets/fonts/ChakraPetch-BoldItalic.ttf"
 const WGHT_TAG := 2003265652  # OpenType 'wght'
 
+## Noto Sans SC, the Simplified Chinese fallback (SIL OFL 1.1, see assets/fonts/OFL-NotoSans.txt). The Latin faces
+## above have no CJK glyphs, so each of them carries one of these as a fallback: Latin and digits keep the original
+## art, Chinese is drawn by the CJK face at the closest weight. Weight -> file, heaviest last.
+const CJK := [
+	[400, "res://assets/fonts/NotoSansSC-Regular.ttf"],
+	[500, "res://assets/fonts/NotoSansSC-Medium.ttf"],
+	[600, "res://assets/fonts/NotoSansSC-SemiBold.ttf"],
+	[700, "res://assets/fonts/NotoSansSC-Bold.ttf"],
+	[800, "res://assets/fonts/NotoSansSC-ExtraBold.ttf"],
+	[900, "res://assets/fonts/NotoSansSC-Black.ttf"],
+]
+
 static var _fonts := {}
 static var _tex := {}
+static var _cjk := {}
+
+## The Noto Sans SC face nearest to `weight` (any value 100..900). Cached.
+static func font_cjk(weight := 700) -> Font:
+	var best := 400
+	for e in CJK:
+		if absi(int(e[0]) - weight) < absi(best - weight):
+			best = int(e[0])
+	if _cjk.has(best):
+		return _cjk[best]
+	var path := ""
+	for e in CJK:
+		if int(e[0]) == best:
+			path = String(e[1])
+	var f: Font = null
+	if path != "" and ResourceLoader.exists(path):
+		f = load(path)
+	_cjk[best] = f
+	return f
+
+## Gives `f` the CJK face of the same weight as a fallback, so a Chinese string drawn in a Latin face is not tofu.
+static func with_cjk(f: Font, weight := 700) -> Font:
+	if f == null:
+		return null
+	var c := font_cjk(weight)
+	if c != null and c != f:
+		var fb: Array[Font] = [c]
+		f.fallbacks = fb
+	return f
 
 ## Noto Sans at a given weight (menu titles, captions, stage names).
 static func font_ui(weight := 800) -> Font:
@@ -24,26 +65,26 @@ static func font_ui(weight := 800) -> Font:
 		var f := FontVariation.new()
 		f.base_font = load(NOTO)
 		f.variation_opentype = {WGHT_TAG: weight}
-		_fonts[key] = f
+		_fonts[key] = with_cjk(f, weight)
 	return _fonts[key]
 
 ## Barlow Condensed ExtraBold (fighter names, big labels).
 static func font_name() -> Font:
 	if not _fonts.has("name"):
-		_fonts["name"] = load(BARLOW_XB)
+		_fonts["name"] = with_cjk(load(BARLOW_XB), 800)
 	return _fonts["name"]
 
 ## Barlow Condensed SemiBold (small caps labels).
 static func font_label() -> Font:
 	if not _fonts.has("label"):
-		_fonts["label"] = load(BARLOW_SB)
+		_fonts["label"] = with_cjk(load(BARLOW_SB), 600)
 	return _fonts["label"]
 
 ## Chakra Petch Bold Italic: the display face for headlines, numerals and buttons. A real italic, because Godot 4.7 ignores
 ## synthetic slant on Labels (FontVariation.variation_transform does nothing here).
 static func font_display() -> Font:
 	if not _fonts.has("display"):
-		_fonts["display"] = load(CHAKRA_BI)
+		_fonts["display"] = with_cjk(load(CHAKRA_BI), 800)
 	return _fonts["display"]
 
 ## An official-art texture by path relative to assets/ba/ ("icon/10005.webp"). Cached; null if missing.
@@ -72,7 +113,7 @@ static func collection(id: int) -> Texture2D:
 static func label(text: String, size: int, kind := "ui", color := INK, weight := 800,
 		outline := 0, outline_color := WHITE, align := HORIZONTAL_ALIGNMENT_LEFT) -> Label:
 	var l := Label.new()
-	l.text = text
+	l.text = Loc.t(text)
 	l.horizontal_alignment = align
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var font: Font

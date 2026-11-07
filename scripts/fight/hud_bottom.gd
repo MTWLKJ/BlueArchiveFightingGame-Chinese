@@ -407,6 +407,7 @@ func _flare(c: Control, at: Vector2, w: float, a: float, age: float) -> void:
 
 ## Italic display text centred on pos (baseline), shrunk until it fits max_w.
 func _text_fit(c: CanvasItem, s: String, pos: Vector2, size: int, max_w: float, col: Color) -> void:
+	s = Loc.t(s)
 	var font := UI.font_display()
 	var sz := Menu.fit_font(font, s, size, max_w, 9)
 	c.draw_string(font, pos - Vector2(font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x * 0.5, 0.0), s, HORIZONTAL_ALIGNMENT_LEFT, -1, sz, col)

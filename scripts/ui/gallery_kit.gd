@@ -19,7 +19,9 @@ const SCHOOL_TINT := {
 const ROLE_NAMES := {"DamageDealer": "Attacker", "Tanker": "Tanker", "Healer": "Healer", "Supporter": "Support", "Vehicle": "Tactical"}
 ## roster armour name -> the attack type it is coloured as (BA colours armour like the bullet that beats it)
 const ARMOR_AS_BULLET := {"LightArmor": "Explosion", "HeavyArmor": "Pierce", "ElasticArmor": "Sonic", "Unarmed": "Mystic"}
-const ARMOR_NAMES := {"LightArmor": "Light", "HeavyArmor": "Heavy", "ElasticArmor": "Elastic", "Unarmed": "Unarmed"}
+## Display name of an armour type. The full id is used rather than a short "Light"/"Heavy" so the localisation table can
+## tell an armour chip apart from the "Light"/"Heavy" attack rows of the move list.
+const ARMOR_NAMES := {"LightArmor": "LightArmor", "HeavyArmor": "HeavyArmor", "ElasticArmor": "ElasticArmor", "Unarmed": "Unarmed"}
 const WEAPON_NAMES := {
 	"AR": "Assault Rifle", "HG": "Handgun", "SR": "Sniper Rifle", "SMG": "Submachine Gun", "SG": "Shotgun",
 	"MG": "Machine Gun", "GL": "Grenade Launcher", "RL": "Rocket Launcher", "RG": "Railgun", "MT": "Mortar", "FT": "Flamethrower",
@@ -248,16 +250,58 @@ static func white_of(t: Texture2D) -> Texture2D:
 	return w
 
 ## Greedy word wrap of `text` in Noto Sans of `weight` at `size` into lines no wider than max_w (a single longer word keeps its line).
+## Chinese has no spaces, so a string holding CJK characters is wrapped per character instead, with the usual rules: a line
+## may not start with closing punctuation (，。、！？」』）…) and may not end with an opening one.
+## The text is translated once up front and measured raw after that (Menu.text_width would look it up again per candidate).
 static func wrap_text(text: String, weight: int, size: int, max_w: float) -> Array:
+	var src := Loc.t(text)
+	var f := UI.font_ui(weight)
+	if has_cjk(src):
+		return _wrap_cjk(src, f, size, max_w)
 	var lines := []
 	var cur := ""
-	for word in text.split(" ", false):
+	for word in src.split(" ", false):
 		var cand: String = word if cur == "" else cur + " " + word
-		if cur == "" or Menu.text_width(cand, size, weight) <= max_w:
+		if cur == "" or f.get_string_size(cand, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x <= max_w:
 			cur = cand
 		else:
 			lines.append(cur)
 			cur = word
+	if cur != "":
+		lines.append(cur)
+	return lines
+
+## True when the string holds any character from the CJK blocks (so the caller knows it has no word breaks).
+static func has_cjk(s: String) -> bool:
+	for i in s.length():
+		var c := s.unicode_at(i)
+		if (c >= 0x2E80 and c <= 0x9FFF) or (c >= 0xF900 and c <= 0xFAFF) or (c >= 0xFF00 and c <= 0xFFEF):
+			return true
+	return false
+
+const NO_LINE_START := "，。、；：！？）」』】〉》”’…·%,.!?:;)]}"
+const NO_LINE_END := "（「『【〈《“‘([{"
+
+static func _wrap_cjk(s: String, f: Font, size: int, max_w: float) -> Array:
+	var lines := []
+	var cur := ""
+	for i in s.length():
+		var ch := s[i]
+		if ch == "\n":
+			lines.append(cur)
+			cur = ""
+			continue
+		var cand := cur + ch
+		if cur != "" and f.get_string_size(cand, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > max_w and not NO_LINE_START.contains(ch):
+			# keep an opening bracket with the character that follows it
+			var carry := ""
+			if cur.length() > 1 and NO_LINE_END.contains(cur[cur.length() - 1]):
+				carry = cur[cur.length() - 1]
+				cur = cur.substr(0, cur.length() - 1)
+			lines.append(cur)
+			cur = carry + ch
+		else:
+			cur = cand
 	if cur != "":
 		lines.append(cur)
 	return lines
@@ -274,6 +318,7 @@ static func fit_paragraph(text: String, weight: int, hi: int, lo: int, max_w: fl
 ## A fighter's name in Barlow Condensed ExtraBold, leaned, shrunk until it is at most max_w wide. pos is the baseline-left.
 ## Returns the size used.
 static func draw_name(ci: CanvasItem, text: String, pos: Vector2, size: int, max_w: float, fill: Color, outline: Color, ow: int) -> int:
+	text = Loc.t(text)
 	var font := UI.font_name()
 	var s := Menu.fit_font(font, text, size, max_w, 16)
 	ci.draw_set_transform_matrix(BaArt.lean_xform(SHEAR, pos.y))

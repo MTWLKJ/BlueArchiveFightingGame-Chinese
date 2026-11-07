@@ -9,10 +9,11 @@ static func slab(x0: float, x1: float, y: float, h: float, lean: float) -> Packe
 	return PackedVector2Array([Vector2(x0 + lean * 0.5, y), Vector2(x1 + lean * 0.5, y), Vector2(x1 - lean * 0.5, y + h), Vector2(x0 - lean * 0.5, y + h)])
 
 static func width(font: Font, s: String, size: int) -> float:
-	return font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	return font.get_string_size(Loc.t(s), HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
 
 ## Outlined text. anchor: 0 = pos.x is the left edge, 1 = centre, 2 = right edge. pos.y is the baseline.
 static func text(c: CanvasItem, font: Font, pos: Vector2, s: String, size: int, fill: Color, outline: Color, ow: int, anchor := 0) -> float:
+	s = Loc.t(s)
 	var w := width(font, s, size)
 	var x := pos.x
 	if anchor == 1:

@@ -444,7 +444,7 @@ func _draw_plate(c: Control, r: Rect2, a: float) -> void:
 	BaArt.nine(c, "Combat__Common_Bg_Raius5px", bar, BaTokens.alpha(_light(), a))
 	c.draw_set_transform_matrix(_lean_matrix(r))
 	BaArt.nine(c, "Common__Common_Nonoutline_W_Bg", r, Color(1, 1, 1, a))
-	var who := Fighters.display_name(f.data)
+	var who := Loc.t(Fighters.display_name(f.data))
 	var font := UI.font_ui(700)
 	var sz := plate_text_size(who)
 	var w := Kit.width(font, who, sz)

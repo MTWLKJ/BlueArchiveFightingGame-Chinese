@@ -29,6 +29,10 @@ var bgm_volume := 0.7
 var sfx_volume := 0.8
 var reduce_flashes := false
 var glyphs := "auto"   # "auto" or one of ControllerGlyphs.OVERRIDES
+## Language codes this build can show, kept in step with Loc.LANGS. Spelled out here because this script compiles before
+## the autoloads exist, so it cannot call Loc.
+const LANGUAGES := ["zh_cn", "en"]
+var language := "zh_cn"
 var jukebox_shuffle := false
 var jukebox_repeat := "one"   # "one" keeps looping the track (the files loop for ever), "all" moves on to the next one when it ends
 
@@ -62,6 +66,8 @@ func load_settings() -> void:
 	reduce_flashes = flash is bool and flash
 	var g = cf.get_value("controls", "glyphs", "auto")
 	glyphs = g if g is String and g in ControllerGlyphs.OVERRIDES else "auto"
+	var lg = cf.get_value("ui", "language", language)
+	language = lg if lg is String and lg in LANGUAGES else language
 	var sh = cf.get_value("audio", "shuffle", false)
 	jukebox_shuffle = sh is bool and sh
 	var rp = cf.get_value("audio", "repeat", "one")
@@ -79,6 +85,7 @@ func save_settings() -> void:
 	cf.set_value("audio", "sfx", sfx_volume)
 	cf.set_value("access", "reduce_flashes", reduce_flashes)
 	cf.set_value("controls", "glyphs", glyphs)
+	cf.set_value("ui", "language", language)
 	cf.set_value("audio", "shuffle", jukebox_shuffle)
 	cf.set_value("audio", "repeat", jukebox_repeat)
 	var err := cf.save(settings_path)

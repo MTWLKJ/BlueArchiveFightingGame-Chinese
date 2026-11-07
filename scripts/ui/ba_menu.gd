@@ -12,7 +12,10 @@ static func nine(ci: CanvasItem, name: String, rect: Rect2, k := K, tint := Colo
 
 ## Bold italic Noto Sans leaning "/" around the baseline, like BA's labels. align 0, 1, 2: pos.x is the left edge, the
 ## centre or the right edge. pos.y is the baseline. Returns the width. Resets the canvas transform.
+## The text goes through Loc.t() so a screen that draws through this helper is translated without touching its call sites;
+## the width is measured on the translated string, so ribbons and plates are sized for the Chinese text.
 static func label(ci: CanvasItem, text: String, pos: Vector2, size: int, fill: Color, outline := Color(0, 0, 0, 0), ow := 0, align := 0, weight := 700) -> float:
+	text = Loc.t(text)
 	var f := UI.font_ui(weight)
 	var w := f.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
 	var x := pos.x - w * (0.0 if align == 0 else (0.5 if align == 1 else 1.0))
@@ -24,12 +27,13 @@ static func label(ci: CanvasItem, text: String, pos: Vector2, size: int, fill: C
 	return w
 
 static func text_width(text: String, size: int, weight := 700) -> float:
-	return UI.font_ui(weight).get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	return UI.font_ui(weight).get_string_size(Loc.t(text), HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
 
 ## The largest size from `size` down to `min_size` at which text fits max_w in font.
 static func fit_font(font: Font, text: String, size: int, max_w: float, min_size := 12) -> int:
 	var s := size
-	while s > min_size and font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, s).x > max_w:
+	var t := Loc.t(text)
+	while s > min_size and font.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, s).x > max_w:
 		s -= 1
 	return s
 
@@ -38,9 +42,9 @@ static func fit(text: String, size: int, max_w: float, min_size := 12, weight :=
 
 ## text cut to max_w with an ellipsis, for labels that stay too long at the smallest size.
 static func clip(text: String, size: int, max_w: float, weight := 700) -> String:
-	if text_width(text, size, weight) <= max_w:
-		return text
-	var s := text
+	var s := Loc.t(text)
+	if text_width(s, size, weight) <= max_w:
+		return s
 	while s.length() > 1 and text_width(s + "…", size, weight) > max_w:
 		s = s.left(s.length() - 1)
 	return s.strip_edges() + "…"

@@ -162,8 +162,9 @@ func _d_text(k: float) -> void:
 	var s := int(round(float(data.get("fsize", 34)) * pop))
 	var p2 := Vector2(-150.0, rise)
 	var font := UI.font_display()
-	draw_string_outline(font, p2, text, HORIZONTAL_ALIGNMENT_CENTER, 300, s, 8, BaTokens.alpha(BaTokens.NUM_OUTLINE, a))
-	draw_string(font, p2, text, HORIZONTAL_ALIGNMENT_CENTER, 300, s, Color(color.r, color.g, color.b, a))
+	var shown := Loc.t(text)
+	draw_string_outline(font, p2, shown, HORIZONTAL_ALIGNMENT_CENTER, 300, s, 8, BaTokens.alpha(BaTokens.NUM_OUTLINE, a))
+	draw_string(font, p2, shown, HORIZONTAL_ALIGNMENT_CENTER, 300, s, Color(color.r, color.g, color.b, a))
 
 func _d_sight(_k: float) -> void:
 	var d2 := float(dir)

@@ -1,0 +1,60 @@
+# License — 授权范围 / Scope of this license
+
+> **This repository is NOT a single-license open-source project.**
+> 本仓库**不是**一个统一许可的开源项目。请把本文件读完，不要只看文件名。
+
+---
+
+## 1. 这份许可覆盖什么 / What this license covers
+
+**CC BY-NC-SA 4.0** 适用于 **Motu Game Tech（冇圡游戏科技）原创的汉化部分**，即：
+
+- `assets/locale/zh_cn.json` — 全部中文译文（791 条）
+- `scripts/core/loc.gd` — 本地化系统
+- 汉化相关的代码修改（见 `CHANGELOG.md` 与 `docs/汉化说明.md`）
+- `assets/ba/hud/words_zh/*.png` — 中文战斗图像字（28 张）
+- `tools/make_zh_words.py`、`tools/loc_coverage.py`、`tools/subset_fonts.cjs`、`tools/check_glyphs.gd`
+- `README.md`、`NOTICE.md`、`CHANGELOG.md`、`LICENSE`、`docs/`、`screenshots/`
+
+你可以在 **署名 + 非商业 + 相同方式共享** 的条件下自由使用、修改和再分发这部分内容。
+
+## 2. 这份许可**不**覆盖什么 / What this license does NOT cover
+
+以下内容的版权**不属于我们**，本许可对它们**不产生任何效力**：
+
+- **原游戏代码与资源** — 版权归 **mattsumi** 所有。上游仓库**没有** LICENSE 文件，即「保留所有权利」。
+- **《蔚蓝档案》相关素材** — 版权归 **NEXON Games Co., Ltd. 与 Yostar, Inc.** 所有。
+- **第三方字体** — 按 **SIL Open Font License 1.1** 使用，见 `assets/fonts/OFL-*.txt`。
+- **第三方图标与工具** — 按各自许可使用，见 `assets/glyphs/LICENSE.txt`、`tools/third_party/`。
+
+换句话说：**我们只授权我们自己写的那一层。** 详见 [`NOTICE.md`](NOTICE.md)。
+
+## 3. CC BY-NC-SA 4.0 摘要 / Summary
+
+| 你可以 / You may | 条件 / Conditions |
+|---|---|
+| 复制、分发汉化内容 | **署名**：注明来自 Motu Game Tech（冇圡游戏科技）与本仓库地址 |
+| 修改、二次创作 | **非商业**：不得用于任何商业用途 |
+| 在其基础上再发布 | **相同方式共享**：衍生作品须采用同样的 CC BY-NC-SA 4.0 |
+
+协议全文 / Full text: <https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode>
+人类可读摘要 / Human-readable summary: <https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+署名建议格式 / Suggested attribution:
+
+```
+Blue Archive Fighting Game — Simplified Chinese Localization
+by Motu Game Tech（冇圡游戏科技）
+https://github.com/<owner>/BlueArchiveFightingGame-Chinese
+Licensed under CC BY-NC-SA 4.0
+```
+
+## 4. 免责 / No warranty
+
+本项目按「现状」提供，不附带任何明示或暗示的担保。使用本项目产生的任何后果由使用者自行承担。
+
+This work is provided "as is", without warranty of any kind.
+
+---
+
+<sub>Copyright © 2026 Motu Game Tech（冇圡游戏科技）— 汉化部分 / localization layer only.</sub>

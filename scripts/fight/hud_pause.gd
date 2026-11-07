@@ -153,13 +153,13 @@ func _draw_panel(c: Control) -> void:
 ## The key hint under the rows. A row with a value (Dummy, Hitboxes, Infinite EX) also answers Left and Right.
 func hint_text() -> String:
 	var toggle := index < _rows.size() and str((_rows[index] as Dictionary).get("value", "")) != ""
-	return "Up / Down: select    %s    Back: resume" % ("Left / Right: change" if toggle else "Confirm: ok")
+	return Loc.t("Up / Down: select    %s    Back: resume") % Loc.t("Left / Right: change" if toggle else "Confirm: ok")
 
 func _mode_text() -> String:
 	if hud.world.training:
-		return "TRAINING"
+		return Loc.t("TRAINING")
 	var n = hud.world.get("round_no")
-	return "ROUND %d" % int(n) if n != null else "PAUSED"
+	return Loc.t("ROUND %d") % int(n) if n != null else Loc.t("PAUSED")
 
 func _draw_row(c: Control, i: int) -> void:
 	var it: Dictionary = _rows[i]

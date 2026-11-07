@@ -48,6 +48,25 @@ const SECTIONS := [
 		"links": [["BA-AX", "https://github.com/Deathemonic/BA-AX"], ["UnityPy", "https://github.com/K0lb3/UnityPy"],
 			["SkelToJson", "https://github.com/BastienGimbert/SkelToJson"], ["Blue Archive data tables", "https://github.com/arisu-archive/bluearchive-data"], ["SchaleDB", "https://schaledb.com"],
 			["FFmpeg", "https://ffmpeg.org"], ["Theora", "https://xiph.org/theora/"], ["Blender", "https://www.blender.org"]]},
+	# The Simplified Chinese localization team. Added by the localization branch: the section sits after the upstream
+	# sections so the original credits above it are untouched and in their original order. Every line here is an English
+	# source string that Loc translates (assets/locale/zh_cn.json); the Chinese title, team name and contribution list are
+	# the entries for "Simplified Chinese Localization", "Chinese Localization Team", "Localization", "Motu Game Tech",
+	# "Contributions" and the "· " lines below. There are no links on purpose: no site, address or social account of the
+	# team is confirmed, and the credits must not invent one.
+	{"title": "Simplified Chinese Localization",
+		"text": ["Chinese Localization Team",
+			"Localization",
+			"Motu Game Tech",
+			"Contributions",
+			"· Game interface and text translation",
+			"· Character names, school names and skill terms localized",
+			"· Chinese font integration and fitting",
+			"· Chinese UI typography tuning",
+			"· Battle HUD Chinese word art",
+			"· Chinese localization system and language switch",
+			"· Localization testing and compatibility verification"],
+		"links": []},
 ]
 
 ## A Callable taking the url; empty means OS.shell_open. Tests set it so no browser opens.

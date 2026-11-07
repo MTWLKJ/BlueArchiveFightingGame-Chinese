@@ -204,7 +204,7 @@ func _draw_fighters(c: Control, p: Vector2, size: Vector2, title: String, rows: 
 		var nx := tp.x + tile.x + 14.0
 		var room := size.x - (nx - p.x) - 200.0
 		GalleryKit.draw_name(c, Fighters.display_name(s).to_upper(), Vector2(nx, y + row_h * 0.5 + 2.0), NAME_PX, room, BaTokens.INK, Color.WHITE, 4)
-		var sub := "%s match%s  ·  %s W  %s L" % [GalleryKit.group(r["games"]), "" if r["games"] == 1 else "es", GalleryKit.group(r["wins"]), GalleryKit.group(r["losses"])]
+		var sub := Loc.t("%s match%s  ·  %s W  %s L") % [GalleryKit.group(r["games"]), Loc.t("" if r["games"] == 1 else "es"), GalleryKit.group(r["wins"]), GalleryKit.group(r["losses"])]
 		Menu.label(c, Menu.clip(sub, 13, room, 700), Vector2(nx + 1.0, y + row_h * 0.5 + 22.0), 13, Color(BaTokens.INK, 0.85), Color(0, 0, 0, 0), 0, 0, 700)
 		var frac := float(r["rate"]) if rate else float(r["games"]) / float(most)
 		var text := "%d%%" % int(round(100.0 * float(r["rate"]) * e)) if rate else GalleryKit.group(int(round(float(r["games"]) * e)))

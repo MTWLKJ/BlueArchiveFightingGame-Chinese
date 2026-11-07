@@ -252,8 +252,8 @@ func _set_texts(stage: Dictionary, first: bool) -> void:
 	if not first:
 		_ghost(_school_lbl, Vector2(0, -16), 0.2)
 		_ghost(_name_lbl, Vector2(0, -22), 0.2)
-	_school_lbl.text = school
-	_name_lbl.text = nm
+	_school_lbl.text = Loc.t(school)
+	_name_lbl.text = Loc.t(nm)
 	_text_age = 0.0 if not first else -0.08
 
 ## A fading, drifting copy of a label that is about to change (the ghost trail of the video's text swaps).
@@ -318,7 +318,7 @@ func _cycle_bgm(dir: int) -> void:
 	Game.session.bgm = Stages.BGM[_bgm_idx]["id"]
 	Sfx.play("tick", 0.9 + 0.08 * _bgm_idx)
 	_ghost(_bgm_lbl, Vector2(-dir * 26.0, 0), 0.18)
-	_bgm_lbl.text = _bgm_text(_bgm_idx)
+	_bgm_lbl.text = Loc.t(_bgm_text(_bgm_idx))
 	_fit_bgm_label()
 	_bgm_dir = dir
 	_bgm_age = 0.0

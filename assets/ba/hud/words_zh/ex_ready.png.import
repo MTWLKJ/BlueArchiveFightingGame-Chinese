@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbe1sfel86agb"
-path="res://.godot/imported/aux.png-85a796877ee2a406bc5cad5fa30c1747.ctex"
+uid="uid://cej1ks07px7ya"
+path="res://.godot/imported/ex_ready.png-4f50debdb6ee63b68ec6e5297e417a67.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/glyphs/switch/aux.png"
-dest_files=["res://.godot/imported/aux.png-85a796877ee2a406bc5cad5fa30c1747.ctex"]
+source_file="res://assets/ba/hud/words_zh/ex_ready.png"
+dest_files=["res://.godot/imported/ex_ready.png-4f50debdb6ee63b68ec6e5297e417a67.ctex"]
 
 [params]
 

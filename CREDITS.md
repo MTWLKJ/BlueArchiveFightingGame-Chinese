@@ -66,3 +66,23 @@ tables by arisu-archive, the English voice subtitles from SchaleDB, FFmpeg and X
 - FFmpeg: https://ffmpeg.org
 - Theora: https://xiph.org/theora/
 - Blender: https://www.blender.org
+
+## Simplified Chinese Localization / 简体中文汉化
+
+Chinese Localization Team / 中文汉化团队
+
+Localization: Motu Game Tech（冇圡游戏科技）
+
+Contributions:
+
+- Game interface and text translation（游戏界面与文本翻译）
+- Character names, school names and skill terms localized（角色名称、学校名称及技能术语本地化）
+- Chinese font integration and fitting（中文字体接入与适配）
+- Chinese UI typography tuning（UI 中文排版优化）
+- Battle HUD Chinese word art（战斗 HUD 中文图像字制作）
+- Chinese localization system and language switch（中文本地化系统与语言切换）
+- Localization testing and compatibility verification（游戏汉化测试与兼容性验证）
+
+The Chinese text of this window lives in assets/locale/zh_cn.json; the section above is the
+"Simplified Chinese Localization" entry of that table. It lists no links on purpose: no site,
+address or social account of the team is confirmed, and a credits list must not invent one.

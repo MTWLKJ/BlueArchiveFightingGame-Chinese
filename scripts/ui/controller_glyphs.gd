@@ -89,7 +89,12 @@ static func _load(path: String) -> Texture2D:
 	return _tex[path]
 
 static func texture(fam: String, action: String) -> Texture2D:
-	return _load("res://assets/glyphs/%s/%s.png" % [fam, action])
+	var t := _load("res://assets/glyphs/%s/%s.png" % [fam, action])
+	if t == null:
+		# "aux" is a reserved device name on Windows: the picture is stored as aux_.png so the project can be checked
+		# out and imported there at all, and the plain name is still tried first for the other platforms.
+		t = _load("res://assets/glyphs/%s/%s_.png" % [fam, action])
+	return t
 
 static func key(name: String) -> Texture2D:
 	return _load("res://assets/glyphs/keyboard/%s.png" % name)
